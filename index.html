@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ใบคำร้องขอสอบซ่อมส่งถึงพี่เหนือ 🥺</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;500&display=swap" rel="stylesheet">
     <style>
         body {
             display: flex;
@@ -26,11 +26,6 @@
             position: relative;
             max-width: 90%;
             width: 400px;
-            min-height: 250px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
         h1 { 
             color: #ff4d6d; 
@@ -42,68 +37,50 @@
             line-height: 1.6;
         }
         .btn-group {
-            margin-top: 25px;
+            margin-top: 30px;
             display: flex;
             justify-content: center;
             gap: 15px;
-            width: 100%;
-            min-height: 50px; /* ล็อกความสูงกันเลย์เอาต์ขยับ */
+            position: relative;
+            height: 50px;
         }
         button {
-            padding: 12px 20px;
+            padding: 12px 24px;
             font-size: 1rem;
             border: none;
             border-radius: 30px;
             cursor: pointer;
             font-weight: 500;
             font-family: 'Kanit', sans-serif;
-            transition: transform 0.2s, background-color 0.2s;
+            transition: transform 0.2s;
         }
         button:active {
             transform: scale(0.95);
         }
-        .btn-next {
-            background-color: #ffb3c1;
-            color: #d90429;
-            width: 100%;
-            max-width: 200px;
-            margin-top: 20px;
-        }
-        .btn-next:hover {
-            background-color: #ff8fa3;
-        }
-        /* ล็อกความกว้างของปุ่มทั้งสองให้เท่ากัน มันจะได้ไม่ยืดมาทับกัน */
-        #btn-yes {
+        #btn-yes, .btn-next {
             background-color: #ff4d6d;
             color: white;
             box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
-            width: 150px; 
         }
         #btn-no {
             background-color: #e0e0e0;
             color: #555;
             position: relative;
-            width: 150px;
         }
         .emoji {
             font-size: 4rem;
             margin-bottom: -10px;
         }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
 </head>
 <body>
-    <div class="container fade-in" id="content">
+    <div class="container" id="content">
         <div class="emoji">😔</div>
         <h1>ยอมรับผิดครับ...</h1>
         <p>ที่ปากไวเผลอไปเรียกพี่เหนือว่า "หมู"<br>ไม่ได้ตั้งใจจะบูลลี่เลย ปากมันลั่นเพราะมันเขี้ยวครับ</p>
-        <button class="btn-next" onclick="nextStep(2)">กดเพื่ออ่านต่อ ➔</button>
+        <div class="btn-group">
+            <button class="btn-next" onclick="nextStep(1)">กดเพื่ออ่านต่อ ➔</button>
+        </div>
     </div>
 
     <script>
@@ -112,45 +89,39 @@
 
         function nextStep(step) {
             const content = document.getElementById('content');
-            
-            content.classList.remove('fade-in');
-            void content.offsetWidth;
-            content.classList.add('fade-in');
 
-            if (step === 2) {
+            if (step === 1) {
                 content.innerHTML = `
                     <div class="emoji">💔</div>
                     <h1>"สอบตกละ"</h1>
                     <p>พอพี่เหนือพิมพ์คำนี้มา เล่นเอาผมหน้าเสียเลย<br>คะแนนความประพฤติติดลบไปแล้วใช่มั้ยครับ 😭</p>
-                    <button class="btn-next" onclick="nextStep(3)">แต่เดี๋ยวก่อน... ➔</button>
+                    <div class="btn-group">
+                        <button class="btn-next" onclick="nextStep(2)">แต่เดี๋ยวก่อน... ➔</button>
+                    </div>
                 `;
-            } 
-            else if (step === 3) {
+            } else if (step === 2) {
                 content.innerHTML = `
                     <div class="emoji">🍵🍫</div>
                     <h1>ขอโอกาสสอบซ่อมได้มั้ย?</h1>
                     <p>ให้ผมได้แก้ตัวนะ เดี๋ยวผมพาไปเลี้ยง<b>ชาเขียวกับช็อกโกแลต</b><br>ของโปรดเป็นการไถ่โทษเลย เล็งคาเฟ่ร้านไหนไว้บอกมาได้เลย!</p>
-                    <button class="btn-next" onclick="nextStep(4)">สรุปก็คือ... ➔</button>
+                    <div class="btn-group">
+                        <button class="btn-next" onclick="nextStep(3)">สรุปก็คือ... ➔</button>
+                    </div>
                 `;
-            } 
-            else if (step === 4) {
+            } else if (step === 3) {
                 content.innerHTML = `
                     <div class="emoji">🥺</div>
                     <h1>คำถามสุดท้าย...</h1>
                     <p>ผมยังมี <b>"สิทธิ์จีบพี่เหนือต่อ"</b> มั้ยครับ?</p>
                     <div class="btn-group">
                         <button id="btn-yes" onclick="forgive()">มีสิทธิ์</button>
-                        <!-- เพิ่ม ontouchstart เพื่อให้หนีทันทีที่นิ้วแตะโดนหน้าจอ -->
-                        <button id="btn-no" onmouseover="moveButton(event)" ontouchstart="moveButton(event)" onclick="return false;">ไม่ให้จีบแล้ว!</button>
+                        <button id="btn-no" onmouseover="moveButton()" onclick="moveButton()">ไม่ให้จีบแล้ว!</button>
                     </div>
                 `;
             }
         }
 
-        function moveButton(e) {
-            // ป้องกันไม่ให้การคลิกหรือสัมผัสทะลุไปโดนปุ่มอื่น
-            if(e) e.preventDefault(); 
-            
+        function moveButton() {
             const btn = document.getElementById('btn-no');
             const maxX = window.innerWidth - btn.clientWidth - 20;
             const maxY = window.innerHeight - btn.clientHeight - 20;
@@ -165,10 +136,6 @@
 
         function forgive() {
             const content = document.getElementById('content');
-            content.classList.remove('fade-in');
-            void content.offsetWidth;
-            content.classList.add('fade-in');
-
             content.innerHTML = `
                 <div class="emoji">⏳</div>
                 <h1>กำลังส่งผลสอบ...</h1>
