@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ใบคำร้องขอสอบซ่อม 🥺</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #ffe6eb;
+            font-family: 'Kanit', sans-serif;
+            text-align: center;
+            overflow: hidden;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 105, 135, 0.2);
+            position: relative;
+            max-width: 90%;
+            width: 400px;
+        }
+        h1 { 
+            color: #ff4d6d; 
+            margin-bottom: 10px;
+        }
+        p { 
+            color: #555; 
+            font-size: 1.1rem; 
+            line-height: 1.6;
+        }
+        .btn-group {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            height: 50px;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            font-family: 'Kanit', sans-serif;
+            transition: transform 0.2s;
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        #btn-yes {
+            background-color: #ff4d6d;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+        }
+        #btn-no {
+            background-color: #e0e0e0;
+            color: #555;
+            position: relative;
+        }
+        .emoji {
+            font-size: 4rem;
+            margin-bottom: -10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="content">
+        <div class="emoji">🐷📝</div>
+        <h1>ยื่นคำร้องขอสอบซ่อม!</h1>
+        <p>ขอโทษที่ปากไวเผลอเรียกว่า "หมู" นะครับ<br>ไม่ได้ตั้งใจบูลลี่เลย แค่มันเขี้ยวเฉยๆ<br><b>ให้โอกาสคนสอบตกคนนี้แก้ตัวได้มั้ยครับ?</b></p>
+        <div class="btn-group">
+            <button id="btn-yes" onclick="forgive()">ให้อภัย (ให้สอบซ่อม)</button>
+            <button id="btn-no" onmouseover="moveButton()" onclick="moveButton()">ไม่! ตกแล้วตกเลย</button>
+        </div>
+    </div>
+
+    <script>
+        function moveButton() {
+            const btn = document.getElementById('btn-no');
+            // คำนวณขอบเขตหน้าจอเพื่อไม่ให้ปุ่มหนีทะลุขอบ
+            const maxX = window.innerWidth - btn.clientWidth - 20;
+            const maxY = window.innerHeight - btn.clientHeight - 20;
+            
+            const randomX = Math.max(20, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(20, Math.floor(Math.random() * maxY));
+            
+            btn.style.position = 'fixed';
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+        }
+
+        function forgive() {
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <div class="emoji">🎉🥰</div>
+                <h1>เย้! ขอบคุณที่ให้โอกาสครับ</h1>
+                <p>สัญญาว่ารอบนี้จะทำคะแนนให้เต็มที่<br>จะไม่เรียกหมูแล้ว จะเรียกที่รักแทน (หยอกๆ)</p>
+            `;
+        }
+    </script>
+</body>
+</html>
+
