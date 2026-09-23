@@ -47,9 +47,10 @@
             justify-content: center;
             gap: 15px;
             width: 100%;
+            min-height: 50px; /* ล็อกความสูงกันเลย์เอาต์ขยับ */
         }
         button {
-            padding: 12px 24px;
+            padding: 12px 20px;
             font-size: 1rem;
             border: none;
             border-radius: 30px;
@@ -71,17 +72,18 @@
         .btn-next:hover {
             background-color: #ff8fa3;
         }
+        /* ล็อกความกว้างของปุ่มทั้งสองให้เท่ากัน มันจะได้ไม่ยืดมาทับกัน */
         #btn-yes {
             background-color: #ff4d6d;
             color: white;
             box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
-            flex: 1;
+            width: 150px; 
         }
         #btn-no {
             background-color: #e0e0e0;
             color: #555;
             position: relative;
-            white-space: nowrap;
+            width: 150px;
         }
         .emoji {
             font-size: 4rem;
@@ -137,14 +139,18 @@
                     <h1>คำถามสุดท้าย...</h1>
                     <p>ผมยังมี <b>"สิทธิ์จีบพี่เหนือต่อ"</b> มั้ยครับ?</p>
                     <div class="btn-group">
-                        <button id="btn-yes" onclick="forgive()">มีสิทธิ์ (ไปกินชาเขียวกัน)</button>
-                        <button id="btn-no" onmouseover="moveButton()" onclick="moveButton()">ไม่ให้จีบแล้ว!</button>
+                        <button id="btn-yes" onclick="forgive()">มีสิทธิ์</button>
+                        <!-- เพิ่ม ontouchstart เพื่อให้หนีทันทีที่นิ้วแตะโดนหน้าจอ -->
+                        <button id="btn-no" onmouseover="moveButton(event)" ontouchstart="moveButton(event)" onclick="return false;">ไม่ให้จีบแล้ว!</button>
                     </div>
                 `;
             }
         }
 
-        function moveButton() {
+        function moveButton(e) {
+            // ป้องกันไม่ให้การคลิกหรือสัมผัสทะลุไปโดนปุ่มอื่น
+            if(e) e.preventDefault(); 
+            
             const btn = document.getElementById('btn-no');
             const maxX = window.innerWidth - btn.clientWidth - 20;
             const maxY = window.innerHeight - btn.clientHeight - 20;
