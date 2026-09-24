@@ -105,8 +105,8 @@
         // 🛑 เอา URL ของ Web App จาก Google App Script มาใส่ตรงนี้ 👇
         const scriptURL = 'ใส่_URL_ที่ก๊อปมา_ตรงนี้';
 
-        // ตัวแปรสำหรับนับจำนวนครั้งที่ปุ่มหนี
         let escapeCount = 0;
+        let lastEscapeTime = 0; // ตัวแปรสำหรับจับเวลาเพื่อกันบั๊กนับเบิ้ล
 
         function nextStep(step) {
             const content = document.getElementById('content');
@@ -147,12 +147,16 @@
         }
 
         function moveButton(e) {
-            if(e) e.preventDefault();
+            // เช็กเพื่อป้องกันไม่ให้หน้าจอกระตุกบนมือถือ
+            if(e && e.cancelable) e.preventDefault();
             
-            // บวกคะแนนการหนีเพิ่ม 1
+            // เช็กเวลาเพื่อกันไม่ให้เซนเซอร์มือถือนับรัวๆ ทีเดียว 5 ครั้ง (ต้องทิ้งช่วง 0.3 วิ)
+            let now = Date.now();
+            if (now - lastEscapeTime < 300) return; 
+            lastEscapeTime = now;
+            
             escapeCount++;
             
-            // ถ้าหนีครบ 5 ครั้ง ให้ยอมแพ้
             if (escapeCount >= 5) {
                 showGiveUp();
                 return;
@@ -170,7 +174,6 @@
             btn.style.top = randomY + 'px';
         }
 
-        // ฟังก์ชันใหม่: ถ้ายอมแพ้
         function showGiveUp() {
             const content = document.getElementById('content');
             content.classList.remove('fade-in');
@@ -182,8 +185,9 @@
                 <h1>ยอมรับสภาพครับ...</h1>
                 <p>ตามปุ่มเก่งขนาดนี้ สงสัยผมจะสอบตกของจริง 😭<br>ไม่เป็นไรครับ ถือว่าผมโดนหักคะแนนความประพฤติ<br>ไว้คราวหน้าจะมาทำคะแนนใหม่นะครับ 🥹</p>
             `;
-            // ในกรณีที่ยอมแพ้ จะไม่ได้ส่งข้อมูลเข้า Google Sheets 
-            // รอให้พี่เหนือแคปหน้าจอนี้มาขิงแทนครับ 555
+            
+            // ส่งข้อมูลไป Sheet พร้อมพารามิเตอร์ ?action=giveup
+            fetch(scriptURL + "?action=giveup", { method: 'POST', mode: 'no-cors' });
         }
 
         function forgive() {
@@ -198,7 +202,8 @@
                 <p>รอแป๊บนึงนะครับ กำลังประมวลผลคะแนนสอบซ่อม</p>
             `;
 
-            fetch(scriptURL, { method: 'POST', mode: 'no-cors' })
+            // ส่งข้อมูลไป Sheet พร้อมพารามิเตอร์ ?action=success
+            fetch(scriptURL + "?action=success", { method: 'POST', mode: 'no-cors' })
                 .then(response => {
                     content.innerHTML = `
                         <div class="emoji">🎉🍵</div>
