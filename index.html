@@ -42,10 +42,11 @@
             justify-content: center;
             gap: 15px;
             position: relative;
-            height: 50px;
+            min-height: 50px;
+            flex-wrap: wrap; /* เผื่อหน้าจอมือถือเล็ก ปุ่มจะได้ปัดตกลงมาสวยๆ */
         }
         button {
-            padding: 12px 24px;
+            padding: 12px 20px;
             font-size: 1rem;
             border: none;
             border-radius: 30px;
@@ -53,11 +54,21 @@
             font-weight: 500;
             font-family: 'Kanit', sans-serif;
             transition: transform 0.2s;
+            white-space: nowrap;
         }
         button:active {
             transform: scale(0.95);
         }
-        #btn-yes, .btn-next {
+        .btn-next {
+            background-color: #ffb3c1;
+            color: #d90429;
+            width: 100%;
+            max-width: 200px;
+        }
+        .btn-next:hover {
+            background-color: #ff8fa3;
+        }
+        #btn-yes {
             background-color: #ff4d6d;
             color: white;
             box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
@@ -71,13 +82,20 @@
             font-size: 4rem;
             margin-bottom: -10px;
         }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
-    <div class="container" id="content">
+    <div class="container fade-in" id="content">
         <div class="emoji">😔</div>
-        <h1>ยอมรับผิดครับ...</h1>
-        <p>ที่เผลอพิมพ์ไปเรียกพี่เหนือว่า "หมู"<br>ไม่ได้ตั้งใจจะบูลลี่เลย  ก็พี่น่ารักนี่น่าเลยคิดว่าพี่เป็นยังไงก็น่ารักไปหมดอะ..</p>
+        <h1>ผมผิดเองครับ 🥹</h1>
+        <p>ที่เผลอเรียกพี่เหนือว่า "หมู" 😭<br>จริง ๆ ไม่ได้ตั้งใจจะเรียกแบบนั้นเลยครับ<br>ปากมันไปก่อนสมอง 555<br>แต่พอคิดย้อนกลับมาแล้ว... ผมผิดเองครับ</p>
         <div class="btn-group">
             <button class="btn-next" onclick="nextStep(1)">กดเพื่ออ่านต่อ ➔</button>
         </div>
@@ -85,16 +103,20 @@
 
     <script>
         // 🛑 เอา URL ของ Web App จาก Google App Script มาใส่ตรงนี้ 👇
-        const scriptURL = 'https://script.google.com/macros/s/AKfycby-dIjMs_BvfboZTggcZdFsl7fpOjAjpQtfX85baMfU_nFHewugENARQKDLeGY_DsSp/exec';
+        const scriptURL = 'ใส่_URL_ที่ก๊อปมา_ตรงนี้';
 
         function nextStep(step) {
             const content = document.getElementById('content');
+            
+            content.classList.remove('fade-in');
+            void content.offsetWidth;
+            content.classList.add('fade-in');
 
             if (step === 1) {
                 content.innerHTML = `
                     <div class="emoji">💔</div>
                     <h1>"สอบตกละ"</h1>
-                    <p>พอพี่เหนือพิมพ์คำนี้มา เล่นเอาผมหน้าเสียเลย<br>คะแนนความประพฤติติดลบไปแล้วใช่มั้ยครับ 😭</p>
+                    <p>พอพี่เหนือพิมพ์คำนี้มา เล่นเอาผมหน้าเสียเลย<br>คะแนนความประพฤติติดลบไปแล้วใช่มั้ยครับ 😭<br>หรือว่างานนี้... ต้องสอบซ่อมแล้วครับ</p>
                     <div class="btn-group">
                         <button class="btn-next" onclick="nextStep(2)">แต่เดี๋ยวก่อน... ➔</button>
                     </div>
@@ -102,8 +124,8 @@
             } else if (step === 2) {
                 content.innerHTML = `
                     <div class="emoji">🍵🍫</div>
-                    <h1>ขอโอกาสสอบซ่อมได้มั้ย?</h1>
-                    <p>ให้ผมได้แก้ตัวนะ เดี๋ยวผมซื้อ<b>ชาเขียวกับช็อกโกแลต</b><br>ของโปรดไปฝากเป็นการไถ่โทษเลย!</p>
+                    <h1>ขอโอกาสสอบซ่อมได้มั้ยครับ? 🥺</h1>
+                    <p>ให้ผมได้แก้ตัวนะ เดี๋ยวชาเขียวกับช็อกโกแลตของโปรด<br>ผมเอาไปส่งเป็นค่าปรับเลยครับ 555</p>
                     <div class="btn-group">
                         <button class="btn-next" onclick="nextStep(3)">สรุปก็คือ... ➔</button>
                     </div>
@@ -112,16 +134,17 @@
                 content.innerHTML = `
                     <div class="emoji">🥺</div>
                     <h1>คำถามสุดท้าย...</h1>
-                    <p>ผมยังมี <b>"สิทธิ์จีบพี่เหนือต่อ"</b> มั้ยครับ?</p>
+                    <p>ผมยังมี <b>"สิทธิ์จีบพี่เหนือต่อ"</b> มั้ยครับ? 🥺</p>
                     <div class="btn-group">
-                        <button id="btn-yes" onclick="forgive()">มีสิทธิ์</button>
-                        <button id="btn-no" onmouseover="moveButton()" onclick="moveButton()">ไม่ให้จีบแล้ว!</button>
+                        <button id="btn-yes" onclick="forgive()">มีสิทธิ์อยู่ 😌</button>
+                        <button id="btn-no" onmouseover="moveButton(event)" ontouchstart="moveButton(event)" onclick="return false;">ยังไม่แน่ใจ ขอคิดคะแนนก่อน 😂</button>
                     </div>
                 `;
             }
         }
 
-        function moveButton() {
+        function moveButton(e) {
+            if(e) e.preventDefault();
             const btn = document.getElementById('btn-no');
             const maxX = window.innerWidth - btn.clientWidth - 20;
             const maxY = window.innerHeight - btn.clientHeight - 20;
@@ -136,10 +159,14 @@
 
         function forgive() {
             const content = document.getElementById('content');
+            content.classList.remove('fade-in');
+            void content.offsetWidth;
+            content.classList.add('fade-in');
+            
             content.innerHTML = `
                 <div class="emoji">⏳</div>
                 <h1>กำลังส่งผลสอบ...</h1>
-                <p>รอแป๊บนึงนะครับ กำลังบันทึกความใจดีของพี่เหนือเข้า Database</p>
+                <p>รอแป๊บนึงนะครับ กำลังประมวลผลคะแนนสอบซ่อม</p>
             `;
 
             fetch(scriptURL, { method: 'POST', mode: 'no-cors' })
@@ -147,14 +174,14 @@
                     content.innerHTML = `
                         <div class="emoji">🎉🍵</div>
                         <h1>เย้! ขอบคุณครับพี่เหนือ</h1>
-                        <p>สถานะ: <b>สอบผ่าน (แบบหวุดหวิด)</b><br>เดี๋ยวผมซื้อขนมของโปรดพี่ไปง้อนะครับ รอรับได้เลย!</p>
+                        <p>สถานะ: <b>สอบผ่าน (แบบหวุดหวิด) 😂</b><br>เดี๋ยวผมเอาชาเขียวกับช็อกโกแลตไปส่งเป็นค่าปรับนะครับ<br>คราวหน้าผมจะคิดก่อนพูดแล้วครับ 🥹❤️</p>
                     `;
                 })
                 .catch(error => {
                     content.innerHTML = `
                         <div class="emoji">😅</div>
-                        <h1>ระบบมีปัญหานิดหน่อย</h1>
-                        <p>แต่ไม่เป็นไร ถือว่าพี่เหนือกดตกลงให้สิทธิ์จีบต่อแล้ว!<br>แคปหน้านี้มาทวงชาเขียวกับช็อกโกแลตได้เลยครับ!</p>
+                        <h1>เย้! ขอบคุณครับพี่เหนือ</h1>
+                        <p>สถานะ: <b>สอบผ่าน (แบบหวุดหวิด) 😂</b><br>เดี๋ยวผมเอาชาเขียวกับช็อกโกแลตไปส่งเป็นค่าปรับนะครับ<br>คราวหน้าผมจะคิดก่อนพูดแล้วครับ 🥹❤️</p>
                     `;
                 });
         }
