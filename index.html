@@ -43,7 +43,7 @@
             gap: 15px;
             position: relative;
             min-height: 50px;
-            flex-wrap: wrap; /* เผื่อหน้าจอมือถือเล็ก ปุ่มจะได้ปัดตกลงมาสวยๆ */
+            flex-wrap: wrap;
         }
         button {
             padding: 12px 20px;
@@ -105,6 +105,9 @@
         // 🛑 เอา URL ของ Web App จาก Google App Script มาใส่ตรงนี้ 👇
         const scriptURL = 'ใส่_URL_ที่ก๊อปมา_ตรงนี้';
 
+        // ตัวแปรสำหรับนับจำนวนครั้งที่ปุ่มหนี
+        let escapeCount = 0;
+
         function nextStep(step) {
             const content = document.getElementById('content');
             
@@ -145,6 +148,16 @@
 
         function moveButton(e) {
             if(e) e.preventDefault();
+            
+            // บวกคะแนนการหนีเพิ่ม 1
+            escapeCount++;
+            
+            // ถ้าหนีครบ 5 ครั้ง ให้ยอมแพ้
+            if (escapeCount >= 5) {
+                showGiveUp();
+                return;
+            }
+
             const btn = document.getElementById('btn-no');
             const maxX = window.innerWidth - btn.clientWidth - 20;
             const maxY = window.innerHeight - btn.clientHeight - 20;
@@ -155,6 +168,22 @@
             btn.style.position = 'fixed';
             btn.style.left = randomX + 'px';
             btn.style.top = randomY + 'px';
+        }
+
+        // ฟังก์ชันใหม่: ถ้ายอมแพ้
+        function showGiveUp() {
+            const content = document.getElementById('content');
+            content.classList.remove('fade-in');
+            void content.offsetWidth;
+            content.classList.add('fade-in');
+            
+            content.innerHTML = `
+                <div class="emoji">🏳️🥺</div>
+                <h1>ยอมรับสภาพครับ...</h1>
+                <p>ตามปุ่มเก่งขนาดนี้ สงสัยผมจะสอบตกของจริง 😭<br>ไม่เป็นไรครับ ถือว่าผมโดนหักคะแนนความประพฤติ<br>ไว้คราวหน้าจะมาทำคะแนนใหม่นะครับ 🥹</p>
+            `;
+            // ในกรณีที่ยอมแพ้ จะไม่ได้ส่งข้อมูลเข้า Google Sheets 
+            // รอให้พี่เหนือแคปหน้าจอนี้มาขิงแทนครับ 555
         }
 
         function forgive() {
